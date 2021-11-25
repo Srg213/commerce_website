@@ -1,0 +1,30 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Active Listings</h2>
+
+       
+    <ul class = 'list-group'> 
+    
+    {%for listing in listings%}
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+    <a href="{%url 'listing' listing.id %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center ">
+        
+        <div class="flex-column">
+            <h4 class="mb-1" >{{listing.title}}</h4><br>
+            <p>Price - ₹{{listing.starting_bid}}</p>    <br>
+            <p>{{listing.description}}</p>
+          
+          </div>
+          {%if listing.image %}
+          <div class="image-parent">
+              <img class='img-fluid' src='{{listing.image}}' alt="{{listing.title}}" width='400' height='400' >              
+          </div>
+        {%endif%}
+        </div>
+    </a>
+</li>
+    {% endfor %}
+    </ul>  
+
+{% endblock %}

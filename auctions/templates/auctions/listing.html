@@ -1,0 +1,65 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2> Listing: {{listing.title}}</h2>
+            <form action="{% url 'watchlist' %}" method = "POST">
+                {% csrf_token %}
+                <input type="hidden" name='listing.id' value={{listing.id}}>
+                <input type = 'submit' value='Watchlist'>
+            </form>
+            
+            <br>
+          {% if listing.image %}
+          <div class="image-parent">
+              <img class='img-fluid' src='{{listing.image}}' alt="{{listing.title}}" width='800' height='500'>              
+          </div><br>
+          {%else%}
+          <p>No image found</p>
+        {% endif %}
+        
+        {% if listing.state%} 
+        <br><h4>Price -  ₹ {{max}}</h4>
+        <small> {{number_bid}} bid(s) have been placed so far.</small>
+        {%if max_bidder %} <p> <h6> The highest bid is placed by {{max_bidder}}. </h6> </p> {%endif%}
+
+        
+            <form action="{% url 'listing' listing.id %}" method ="POST">
+            {%csrf_token%}
+            <input type="number" name ="Bid" ><br>
+            <input type="submit" value='Place bid'>
+        </form>
+        {%else%}
+            <p>The highest bidder is {{max_bidder}} with bid of {{max}}</p>
+        {% endif %}
+
+    {%if message %}
+        <small>{{message}}</small>
+    {% endif %}
+
+    <h4>Details :</h1>
+    <ul>
+        <li>Created by : {{listing.creator}}</li>
+        <li>Description :{{listing.description}}</li>
+        <li>Starting bid price is :{{listing.starting_bid}}</li>
+    </ul>
+
+    {% if Close and listing.state%}
+        <form action = '/' method= 'POST'>
+            {%csrf_token%}
+            <input type = "hidden" name='user.id' value={{request.user.id}}>
+            <input type="hidden" name='listing.id' value={{listing.id}}>
+            <input type='submit' value = 'Close the bid' >
+        </form>
+    {%endif%}
+    
+    {% if Close and listing.state%}
+        <form action ="/comment"  method = 'POST'>
+            {%csrf_token%}
+            <input type = "hidden" name='user.id' value={{request.user.id}}>
+            <input type="hidden" name='listing.id' value={{listing.id}}>
+            <input type='text' name='comment'>
+            <input type='submit' value = 'Post Comment' >
+        </form>
+    {%endif%}
+    
+{% endblock %}

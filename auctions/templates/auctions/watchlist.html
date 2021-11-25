@@ -1,0 +1,14 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Watchlist</h2>
+    {% for listing in listing%}
+    <div class="list-group-item list-group-item-action">
+    <h1>{{listing.title}}</h1><br>
+    <p>{{listing.starting_bid}}</p>
+    <p> {{listing.description}}</p>
+
+    </div>
+    {%endfor%}
+    
+{% endblock %}
